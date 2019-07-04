@@ -15,7 +15,7 @@ class WebSocketRemoteTest : ClientLoader() {
     private val echoWebsocket = "echo.websocket.org"
 
     @Test
-    fun testRemotePingPong(): Unit = clientTests {
+    fun testRemotePingPong(): Unit = clientTests("Jetty") {
         config {
             install(WebSockets)
         }
@@ -30,7 +30,7 @@ class WebSocketRemoteTest : ClientLoader() {
     }
 
     @Test
-    fun testSecureRemotePingPong(): Unit = clientTests {
+    fun testSecureRemotePingPong(): Unit = clientTests("Jetty") {
         config {
             install(WebSockets)
         }
@@ -45,7 +45,7 @@ class WebSocketRemoteTest : ClientLoader() {
     }
 
     @Test
-    fun testWithLogging(): Unit = clientTests {
+    fun testWithLogging(): Unit = clientTests("Jetty") {
         config {
             install(Logging) {
                 level = LogLevel.ALL
@@ -62,7 +62,7 @@ class WebSocketRemoteTest : ClientLoader() {
     }
 
     @Test
-    fun testSessionClose(): Unit = clientTests {
+    fun testSessionClose(): Unit = clientTests("Jetty") {
         config {
             install(WebSockets)
         }
@@ -78,7 +78,7 @@ class WebSocketRemoteTest : ClientLoader() {
     }
 
     @Test
-    fun testSessionTermination(): Unit = clientTests {
+    fun testSessionTermination(): Unit = clientTests("Jetty") {
         config {
             install(WebSockets)
         }

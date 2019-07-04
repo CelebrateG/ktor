@@ -11,16 +11,19 @@ import kotlinx.coroutines.*
  * Helper interface to test client.
  */
 actual abstract class ClientLoader {
+    actual var TEST_SERVER: String = HTTP_TEST_SERVER
+        private set
+
     /**
      * Perform test against all clients from dependencies.
      */
     actual fun clientTests(
-        skipPlatforms: List<String>,
+        vararg skipEngines: String,
         block: suspend TestClientBuilder<HttpClientEngineConfig>.() -> Unit
     ) {
-        if ("native" in skipPlatforms) return
-
         engines.forEach {
+            if (it.toString() in skipEngines) return@forEach
+
             clientTest(it) {
                 withTimeout(3000) {
                     block()

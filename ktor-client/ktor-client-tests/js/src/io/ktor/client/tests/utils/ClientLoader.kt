@@ -11,13 +11,16 @@ import kotlinx.coroutines.*
  * Helper interface to test client.
  */
 actual abstract class ClientLoader {
+    actual var TEST_SERVER: String = HTTP_TEST_SERVER
+        private set
+
     /**
      * Perform test against all clients from dependencies.
      */
     actual fun clientTests(
-        skipPlatforms: List<String>,
+        vararg skipEngines: String,
         block: suspend TestClientBuilder<HttpClientEngineConfig>.() -> Unit
-    ): dynamic = if ("js" in skipPlatforms) GlobalScope.async {}.asPromise() else clientTest {
+    ): dynamic = if ("js" in skipEngines) GlobalScope.async {}.asPromise() else clientTest {
         withTimeout(30 * 1000) {
             block()
         }

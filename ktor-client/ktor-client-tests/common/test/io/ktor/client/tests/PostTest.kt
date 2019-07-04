@@ -14,21 +14,21 @@ import kotlin.test.*
 
 class PostTest : ClientLoader() {
     @Test
-    fun testPostString() = clientTests(listOf("js")) {
+    fun testPostString() = clientTests("js") {
         test { client ->
             client.postHelper(makeString(777))
         }
     }
 
     @Test
-    fun testHugePost() = clientTests(listOf("js")) {
+    fun testHugePost() = clientTests("js") {
         test { client ->
             client.postHelper(makeString(32 * 1024 * 1024))
         }
     }
 
     @Test
-    fun testWithPause() = clientTests(listOf("js")) {
+    fun testWithPause() = clientTests("js") {
         test { client ->
             val content = makeString(32 * 1024 * 1024)
 

@@ -70,6 +70,21 @@ internal class JettyResponseListener(
         }
     }
 
+    override fun onClosed(stream: Stream) {
+        if ((stream as HTTP2Stream).isReset) {
+            backendChannel.close()
+        }
+    }
+
+    override fun onReset(stream: Stream?, frame: ResetFrame?, callback: Callback?) {
+        backendChannel.close()
+    }
+
+    override fun onFailure(stream: Stream, error: Int, reason: String, callback: Callback) {
+        backendChannel.close(IOException(reason))
+        callback.succeeded()
+    }
+
     override fun onHeaders(stream: Stream, frame: HeadersFrame) {
         frame.metaData.fields.forEach { field ->
             headersBuilder.append(field.name, field.value)

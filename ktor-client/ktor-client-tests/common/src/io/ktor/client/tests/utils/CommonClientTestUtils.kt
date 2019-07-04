@@ -12,11 +12,6 @@ import kotlinx.coroutines.*
 import kotlinx.io.core.*
 
 /**
- * Local test server url.
- */
-const val TEST_SERVER: String = "http://127.0.0.1:8080"
-
-/**
  * Perform test with selected client [engine].
  */
 fun clientTest(

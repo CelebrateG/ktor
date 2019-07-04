@@ -4,13 +4,17 @@
 
 package io.ktor.client.tests.utils
 
+import ch.qos.logback.classic.*
 import io.ktor.client.*
 import io.ktor.client.engine.*
+import io.ktor.client.engine.jetty.*
 import kotlinx.coroutines.debug.*
 import kotlinx.coroutines.debug.junit4.*
+import org.eclipse.jetty.util.ssl.*
 import org.junit.*
 import org.junit.runner.*
 import org.junit.runners.*
+import org.slf4j.*
 import java.util.*
 
 /**
@@ -25,15 +29,40 @@ actual abstract class ClientLoader {
     @get:Rule
     open val timeout = CoroutinesTimeout.seconds(30)
 
+    actual var TEST_SERVER: String = HTTP_TEST_SERVER
+        private set
+
+    @Before
+    fun setup() {
+        val logger = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger
+        logger.level = Level.WARN
+    }
+
     /**
      * Perform test against all clients from dependencies.
      */
     actual fun clientTests(
-        skipPlatforms: List<String>,
+        vararg skipEngines: String,
         block: suspend TestClientBuilder<HttpClientEngineConfig>.() -> Unit
     ) {
-        if ("jvm" in skipPlatforms) return
-        clientTest(engine.factory, block)
+        val engineName = engine.toString()
+        Assume.assumeFalse(engineName in skipEngines)
+
+        TEST_SERVER = when (engineName) {
+            "Jetty" -> HTTPS_TEST_SERVER
+            else -> HTTP_TEST_SERVER
+        }
+
+        val factory = when (engine.factory) {
+            Jetty -> {
+                Jetty.config {
+                    sslContextFactory = SslContextFactory(true)
+                }
+            }
+            else -> engine.factory
+        }
+
+        clientTest(factory, block)
     }
 
     actual fun dumpCoroutines() {
@@ -47,4 +76,5 @@ actual abstract class ClientLoader {
             ServiceLoader.load(it, it.classLoader).toList()
         }
     }
+
 }

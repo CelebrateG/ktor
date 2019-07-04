@@ -29,7 +29,7 @@ class ContentTest : ClientLoader() {
     )
 
     @Test
-    fun testGetFormData() = clientTests(listOf("js")) {
+    fun testGetFormData() = clientTests("js") {
         test { client ->
             val form = parametersOf(
                 "user" to listOf("myuser"),
@@ -45,7 +45,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testByteArray() = clientTests(listOf("js")) {
+    fun testByteArray() = clientTests("js") {
         test { client ->
             testSize.forEach { size ->
                 val content = makeArray(size)
@@ -57,7 +57,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testByteReadChannel() = clientTests(listOf("js")) {
+    fun testByteReadChannel() = clientTests("js") {
         test { client ->
             testSize.forEach { size ->
                 val content = makeArray(size)
@@ -70,7 +70,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testString() = clientTests(listOf("js")) {
+    fun testString() = clientTests("js") {
         test { client ->
             testSize.forEach { size ->
                 val content = makeString(size)
@@ -83,7 +83,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testTextContent() = clientTests(listOf("js")) {
+    fun testTextContent() = clientTests("js") {
         test { client ->
             testSize.forEach { size ->
                 val content = makeString(size)
@@ -95,7 +95,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testByteArrayContent() = clientTests(listOf("js")) {
+    fun testByteArrayContent() = clientTests("js") {
         test { client ->
             testSize.forEach { size ->
                 val content = makeArray(size)
@@ -107,7 +107,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testPostFormData() = clientTests(listOf("js")) {
+    fun testPostFormData() = clientTests("js") {
         test { client ->
             val form = parametersOf(
                 "user" to listOf("myuser"),
@@ -120,7 +120,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testMultipartFormData() = clientTests(listOf("js")) {
+    fun testMultipartFormData() = clientTests("js") {
         val data = {
             formData {
                 append("name", "hello")
@@ -151,7 +151,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testFormDataWithContentLength() = clientTests(listOf("js")) {
+    fun testFormDataWithContentLength() = clientTests("js") {
         test { client ->
             client.submitForm<Unit> {
                 url("$TEST_SERVER/content/file-upload")
@@ -205,7 +205,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testDownloadStreamChannelWithCancel() = clientTests(listOf("js")) {
+    fun testDownloadStreamChannelWithCancel() = clientTests("js") {
         test { client ->
             val content = client.get<ByteReadChannel>("$TEST_SERVER/content/stream")
             content.cancel()
@@ -213,7 +213,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testDownloadStreamResponseWithClose() = clientTests(listOf("js")) {
+    fun testDownloadStreamResponseWithClose() = clientTests("js") {
         test { client ->
             val response = client.get<HttpResponse>("$TEST_SERVER/content/stream")
             response.close()
@@ -221,7 +221,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testDownloadStreamResponseWithCancel() = clientTests(listOf("js")) {
+    fun testDownloadStreamResponseWithCancel() = clientTests("js") {
         test { client ->
             val response = client.get<HttpResponse>("$TEST_SERVER/content/stream")
             response.cancel()
@@ -229,7 +229,7 @@ class ContentTest : ClientLoader() {
     }
 
     @Test
-    fun testDownloadStreamArrayWithTimeout() = clientTests(listOf("js")) {
+    fun testDownloadStreamArrayWithTimeout() = clientTests("js") {
         test { client ->
             val result = withTimeoutOrNull(100) {
                 client.get<ByteArray>("$TEST_SERVER/content/stream")

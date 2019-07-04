@@ -169,7 +169,7 @@ BODY END
     }
 
     @Test
-    fun customServerHeadersLoggingTest(): Unit = clientTests {
+    fun customServerHeadersLoggingTest(): Unit = clientTests("Jetty") {
         val testLogger = TestLogger()
 
         config {

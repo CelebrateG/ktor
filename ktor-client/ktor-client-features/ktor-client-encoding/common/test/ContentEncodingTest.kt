@@ -8,9 +8,10 @@ import io.ktor.client.request.*
 import io.ktor.client.tests.utils.*
 import kotlin.test.*
 
-private const val TEST_URL = "$TEST_SERVER/compression"
-
 class ContentEncodingTest : ClientLoader() {
+
+    private val TEST_URL get() = "$TEST_SERVER/compression"
+
     @Test
     fun testIdentity() = clientTests {
         config {

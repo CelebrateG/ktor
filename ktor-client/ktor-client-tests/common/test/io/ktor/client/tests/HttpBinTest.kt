@@ -25,7 +25,7 @@ data class HttpBinResponse(
 class HttpBinTest : ClientLoader() {
 
     @Test
-    fun testGet() = clientTests {
+    fun testGet() = clientTests("Jetty") {
         config {
             testConfiguration()
         }
@@ -45,7 +45,7 @@ class HttpBinTest : ClientLoader() {
     }
 
     @Test
-    fun testPost() = clientTests {
+    fun testPost() = clientTests("Jetty") {
         config {
             testConfiguration()
         }
@@ -68,7 +68,7 @@ class HttpBinTest : ClientLoader() {
     }
 
     @Test
-    fun testBytes() = clientTests {
+    fun testBytes() = clientTests("Jetty") {
         test { client ->
             val size = 100 * 1024
             val response = client.get<HttpResponse>("https://httpbin.org/bytes/$size").use {

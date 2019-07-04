@@ -51,7 +51,7 @@ class FullFormTest : ClientLoader() {
     }
 
     @Test
-    fun testRequest() = clientTests {
+    fun testRequest() = clientTests("Jetty") {
         test { client ->
             val requestBuilder = request {
                 url {
@@ -70,10 +70,9 @@ class FullFormTest : ClientLoader() {
     }
 
     @Test
-    fun testCustomUrls() = clientTests {
+    fun testCustomHttpsUrls() = clientTests("Jetty") {
         val urls = listOf(
             "https://google.com",
-            "http://kotlinlang.org/",
             "https://kotlinlang.org/"
         )
 
@@ -82,5 +81,18 @@ class FullFormTest : ClientLoader() {
                 client.get<String>(it)
             }
         }
+    }
+
+    @Test
+    fun testCustomHttpUrls() = clientTests("Jetty") {
+        val urls = listOf(
+            "http://kotlinlang.org/"
+        )
+        test { client ->
+            urls.forEach {
+                client.get<String>(it)
+            }
+        }
+
     }
 }

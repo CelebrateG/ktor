@@ -14,7 +14,7 @@ import kotlinx.io.core.*
 import kotlin.test.*
 
 class HttpRedirectTest : ClientLoader() {
-    private val TEST_URL_BASE = "$TEST_SERVER/redirect"
+    private val TEST_URL_BASE get() = "$TEST_SERVER/redirect"
 
     @Test
     fun redirectTest(): Unit = clientTests {
@@ -44,7 +44,7 @@ class HttpRedirectTest : ClientLoader() {
     }
 
     @Test
-    fun redirectWithCookiesTest() = clientTests(listOf("js")) {
+    fun redirectWithCookiesTest() = clientTests("js") {
         config {
             install(HttpCookies)
             install(HttpRedirect)
@@ -60,7 +60,7 @@ class HttpRedirectTest : ClientLoader() {
     }
 
     @Test
-    fun customUrlsTest() = clientTests {
+    fun customUrlsTest() = clientTests("Jetty") {
         val urls = listOf(
             "https://files.forgecdn.net/files/2574/880/BiblioCraft[v2.4.5][MC1.12.2].jar",
             "https://files.forgecdn.net/files/2611/560/Botania r1.10-356.jar",
@@ -82,7 +82,7 @@ class HttpRedirectTest : ClientLoader() {
     }
 
     @Test
-    fun httpStatsTest() = clientTests {
+    fun httpStatsTest() = clientTests("Jetty") {
         test { client ->
             client.get<HttpResponse>("https://httpstat.us/301").use { response ->
                 assertEquals(HttpStatusCode.OK, response.status)
@@ -109,7 +109,7 @@ class HttpRedirectTest : ClientLoader() {
     }
 
     @Test
-    fun redirectHostAbsolute() = clientTests(listOf("js")) {
+    fun redirectHostAbsolute() = clientTests("js", "Jetty") {
         test { client ->
             client.get<HttpResponse>("$TEST_URL_BASE/directory/hostAbsoluteRedirect").use {
                 assertEquals("200 OK", it.readText())

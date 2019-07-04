@@ -54,7 +54,7 @@ class KotlinxSerializerTest : ClientLoader() {
     }
 
     @Test
-    fun testReceiveFromGithub() = clientTests {
+    fun testReceiveFromGithub() = clientTests("Jetty") {
         config {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(Json.nonstrict).apply {
