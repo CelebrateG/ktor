@@ -9,6 +9,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.features.cookies.*
 import io.ktor.client.request.*
+import io.ktor.client.response.*
 import io.ktor.client.tests.utils.*
 import io.ktor.http.*
 import io.ktor.response.*
@@ -75,6 +76,10 @@ abstract class CookiesTest(private val factory: HttpClientEngineFactory<*>) : Te
             }
             get("/FOO") {
                 assertTrue(call.request.cookies.rawCookies.isEmpty())
+                call.respond("OK")
+            }
+            get("/plus") {
+                call.response.headers.append("Set-Cookie", "true=2+2%3D4; Path=/; \$x-enc=URI_ENCODING")
                 call.respond("OK")
             }
             get("/expire") {
@@ -220,6 +225,19 @@ abstract class CookiesTest(private val factory: HttpClientEngineFactory<*>) : Te
             } catch (cause: Throwable) {
                 throw cause
             }
+        }
+    }
+
+    @Test
+    fun testCookieWithPlus() = clientTest(factory) {
+        config {
+            install(HttpCookies)
+        }
+
+        test { client ->
+            client.get<String>(port = serverPort, path = "/plus")
+            val cookies = client.cookies(hostname)
+            assertEquals("2+2=4", cookies["true"]!!.value)
         }
     }
 
