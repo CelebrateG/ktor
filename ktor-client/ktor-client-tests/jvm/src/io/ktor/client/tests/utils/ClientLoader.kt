@@ -7,10 +7,8 @@ package io.ktor.client.tests.utils
 import ch.qos.logback.classic.*
 import io.ktor.client.*
 import io.ktor.client.engine.*
-import io.ktor.client.engine.jetty.*
 import kotlinx.coroutines.debug.*
 import kotlinx.coroutines.debug.junit4.*
-import org.eclipse.jetty.util.ssl.*
 import org.junit.*
 import org.junit.runner.*
 import org.junit.runners.*
@@ -53,16 +51,7 @@ actual abstract class ClientLoader {
             else -> HTTP_TEST_SERVER
         }
 
-        val factory = when (engine.factory) {
-            Jetty -> {
-                Jetty.config {
-                    sslContextFactory = SslContextFactory(true)
-                }
-            }
-            else -> engine.factory
-        }
-
-        clientTest(factory, block)
+        clientTest(engine.factory, block)
     }
 
     actual fun dumpCoroutines() {
