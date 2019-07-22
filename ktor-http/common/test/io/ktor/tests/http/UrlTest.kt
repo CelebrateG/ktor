@@ -156,4 +156,10 @@ class UrlTest {
 
         assertFails { testPort(-2) }
     }
+
+    @Test
+    fun testQuestionMark() {
+        val url = Url("http://abc.abc/page?PartOf?Name=Value")
+        assertEquals("http://abc.abc?PartOf?Name=Value", url.fullPath)
+    }
 }
