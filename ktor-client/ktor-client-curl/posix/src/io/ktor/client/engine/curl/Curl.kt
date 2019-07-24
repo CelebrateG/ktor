@@ -26,7 +26,7 @@ private val initHook = Curl
 object Curl : HttpClientEngineFactory<HttpClientEngineConfig> {
 
     init {
-        engines.add(this)
+        engines.append(this)
     }
 
     override fun create(block: HttpClientEngineConfig.() -> Unit): HttpClientEngine {
