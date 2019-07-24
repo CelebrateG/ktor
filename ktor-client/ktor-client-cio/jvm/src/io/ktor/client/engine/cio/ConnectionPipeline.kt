@@ -25,6 +25,7 @@ internal class ConnectionPipeline(
     keepAliveTime: Long,
     pipelineMaxSize: Int,
     socket: Socket,
+    overProxy: Boolean,
     tasks: Channel<RequestTask>,
     parentContext: CoroutineContext
 ) : CoroutineScope {
@@ -50,7 +51,7 @@ internal class ConnectionPipeline(
                     throw cause
                 }
 
-                task.request.write(networkOutput, task.context)
+                task.request.write(networkOutput, task.context, overProxy)
                 networkOutput.flush()
             }
         } catch (_: ClosedChannelException) {
