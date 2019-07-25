@@ -13,7 +13,7 @@ import kotlin.test.*
 class ProxyTest : ClientLoader() {
 
     @Test
-    fun testHttpProxy() = clientTests {
+    fun testHttpProxy() = clientTests(listOf("js")) {
         config {
             engine {
                 proxy = ProxyBuilder.http(HTTP_PROXY_SERVER)
